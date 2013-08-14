@@ -41,22 +41,22 @@
         (recur (- n 1)
           (conj tasks (immutable-todo-details)))))))
 
-;immutable with map and reduce
+;immutable with higher order functions
 
-(defn for-map-todo-details [x]
+(defn todo-task-details []
   (let [task-code (todo-prompt "Task code?")
         task-description (todo-prompt "Task description?")
         task-days-given-to-complete (todo-prompt "Task days given to complete?")]
     {task-code {"task-description" task-description
                 "task-days-given-to-complete" task-days-given-to-complete} }))
 
-(defn map-reduce-version []
-  (reduce conj (map for-map-todo-details (range (read-string (todo-prompt "Number of tasks?"))))))
+(defn accumulate-all-tasks-from-prompt []
+  (doall (repeatedly (. Integer parseInt  (todo-prompt "Number of tasks?")) todo-task-details)))
 
 (defn -main []
   (println "atom-swap-version")
   (atom-swap-version)
   (println "loop-recur-version")
   (loop-recur-version)
-  (println "map-reduce-version")
-  (map-reduce-version))
+  (println "higer-order-functions-version")
+  (accumulate-all-tasks-from-prompt))
